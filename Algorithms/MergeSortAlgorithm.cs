@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 namespace Algorithms
 {
+    // TODO: Remove ref and make sure the unit tests work on the algorithm
     public class MergeSortAlgorithm
     {
         public static T[] Execute<T>(T[] A) where T : IComparable<T>
@@ -24,44 +25,6 @@ namespace Algorithms
 
             return array;
         }
-
-        /*private static void Merge<T>(ref T[] array, int firstIndex, int middleIndex, int lastIndex)
-            where T : IComparable<T>
-        {
-            int n1 = middleIndex - firstIndex;
-            int n2 = lastIndex - middleIndex;
-
-            T[] left = new T[n1 + 1];
-            T[] right = new T[n2 + 1];
-
-            for (int i = 0; i < left.Length; i++)
-            {
-                left[i] = array[firstIndex + i];
-            }
-
-            for (int i = 0; i < right.Length; i++)
-            {
-                right[i] = array[middleIndex + i];
-            }
-
-
-            int a = 0;
-            int s = 0;
-
-            for (int k = firstIndex; k < firstIndex; k++)
-            {
-                if (left[a].CompareTo(right[s]) >= 0)
-                {
-                    array[k] = left[a];
-                    a++;
-                }
-                else
-                {
-                    array[k] = right[s];
-                    s++;
-                }
-            }
-        }*/
 
         private static void Merge<T>(ref T[] input, int low, int middle, int high) where T : IComparable<T>
         {
