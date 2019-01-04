@@ -14,9 +14,10 @@ namespace Data_Structures
     {
         public DoublyLinkedList()
         {
-            First = null;
-            Last = null;
+            Head = null;
+            Tail = null;
         }
+
         public DoublyLinkedList(T initialValue)
         {
             var initialNode = new DoublyNode<T>()
@@ -25,14 +26,14 @@ namespace Data_Structures
                 Next = null,
                 Previous = null
             };
-            First = initialNode;
-            Last = initialNode;
+            Head = initialNode;
+            Tail = initialNode;
         }
 
-        public DoublyNode<T> First { get; set; }
-        public DoublyNode<T> Last { get; set; }
-        
-        
+        public DoublyNode<T> Head { get; set; }
+        public DoublyNode<T> Tail { get; set; }
+
+
         public void InsertAfter<U>(DoublyNode<T> node, U value) where U : T
         {
             var newNode = new DoublyNode<T>()
@@ -40,9 +41,10 @@ namespace Data_Structures
                 Value = value,
                 Previous = node
             };
+
             if (node.Next == null)
             {
-                Last = newNode;
+                Tail = newNode;
             }
             else
             {
@@ -60,31 +62,61 @@ namespace Data_Structures
                 Value = value,
                 Next = node
             };
+
+            if (node.Previous == null)
+            {
+                newNode.Previous = null;
+                Head = newNode;
+            }
+            else
+            {
+                newNode.Next = node;
+                node.Previous.Next = newNode;
+            }
+
+            node.Previous = newNode;
         }
 
-        public void InsertBegin<U>(DoublyNode<T> node, U value) where U : T
+        public void InsertBegin<U>(U value) where U : T
         {
             var newNode = new DoublyNode<T>()
             {
                 Value = value,
-                Previous = null
             };
 
-            if (First != null)
+            if (Head == null)
             {
-                First.Previous = newNode;
+                Head = newNode;
+                Tail = newNode;
+                newNode.Previous = null;
+                newNode.Next = null;
             }
-            
-            newNode.Next = First;
-            First = newNode;
+            else
+            {
+                InsertBefore(Head, value);
+            }
         }
 
-        public void InsertEnd<U>(DoublyNode<T> node, U value) where U : T
+        public void InsertEnd<U>(U value) where U : T
         {
+            if (Tail == null)
+            {
+                InsertBegin(value);
+            }
+            else
+            {
+                InsertAfter(Tail, value);
+            }
         }
 
-        public void Remove<U>(U value) where U : T
+        /// <summary>
+        /// Removes the first occurence of node with given value
+        /// </summary>
+        /// <param name="value"></param>
+        /// <typeparam name="U"></typeparam>
+        public void RemoveFirst<U>(U value) where U : T
         {
+            // TODO: Implement and test this method
         }
     }
 }
