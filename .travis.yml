@@ -1,2 +1,8 @@
 language: csharp
 solution: Algorithms and Data Structures.sln
+dotnet: 1.0.1
+install:
+- dotnet restore
+script:
+- dotnet build
+- dotnet test Testing
