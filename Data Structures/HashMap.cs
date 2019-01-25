@@ -63,10 +63,14 @@ namespace Data_Structures
                     next = i - 1;
                 }
 
-                if (Slots[next].Key.Equals(key))
+                if (Slots[next] != null)
                 {
-                    return Slots[index].Value;
+                    if (Slots[next].Key.Equals(key))
+                    {
+                        return Slots[index].Value;
+                    }
                 }
+                else break;
             }
 
             throw new Exception($"No value with key {key.ToString()} in hashtable");
