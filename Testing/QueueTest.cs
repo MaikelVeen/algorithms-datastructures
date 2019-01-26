@@ -66,5 +66,18 @@ namespace Testing
             Assert.Equal(0, queue.Count);
             Assert.True(queue.IsEmpty());
         }
+
+        [Fact]
+        public void TestContainsEmpty()
+        {
+            Assert.False(queue.Contains("Alpha"));
+        }
+        
+        [Fact]
+        public void TestContains()
+        {
+            queue.Enqueue("Alpha");
+            Assert.True(queue.Contains("Alpha"));
+        }
     }
 }
