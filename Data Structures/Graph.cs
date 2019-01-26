@@ -149,6 +149,21 @@ namespace Data_Structures
             }
         }
 
+        public List<int> GetAdjacentVertex(int index)
+        {
+            List<int> adjacentIndexes = new List<int>();
+            for (int i = 0; i < Count; i++)
+            {
+                int weight = AdjancencyMatrix[index, i];
+                if (weight > 0)
+                {
+                    adjacentIndexes.Add(i);
+                }
+            }
+
+            return adjacentIndexes;
+        }
+
         public string BreadthFirstTraversal(StringBuilder stringBuilder)
         {
             Queue<int> queue = new Queue<int>();

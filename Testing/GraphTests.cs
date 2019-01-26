@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
 using Data_Structures;
 using Xunit;
@@ -98,7 +99,25 @@ namespace Testing
 
         #region Traversal Tests
 
-        
+
+        [Fact]
+        public void TestAdjacentFetching()
+        {
+            graph = new Graph<string>(graphData, edges);
+
+            List<int> adjacentToA = graph.GetAdjacentVertex(0);
+            Assert.Contains(4, adjacentToA);
+            Assert.Contains(1, adjacentToA);
+            Assert.DoesNotContain(3, adjacentToA);
+            
+            
+            List<int> adjacentToC = graph.GetAdjacentVertex(2);
+            Assert.Contains(1, adjacentToC);
+            Assert.Contains(3, adjacentToC);
+            Assert.Contains(5, adjacentToC);
+            Assert.Contains(6, adjacentToC);
+            Assert.DoesNotContain(0, adjacentToA);
+        }
 
         #endregion
 
