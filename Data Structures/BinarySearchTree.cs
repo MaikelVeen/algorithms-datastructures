@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 
 namespace Data_Structures
 {
@@ -81,6 +82,111 @@ namespace Data_Structures
                     InsertNode(value, node.Right);
                 }
             }
+        }
+    
+        /// <summary>
+        /// Returns node with given value, Returns null if not found
+        /// </summary>
+        /// <param name="value">Value to search for</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException">Value to search for cannot be null</exception>
+        public Node<T> Search(T value)
+        {
+            if(value == null) throw new ArgumentException("Value to search for cannot be null");
+            throw new NotImplementedException();
+        }
+        
+        /// <summary>
+        /// Returns true is value is found and successfully deleted
+        /// Otherwise false
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        public bool DeleteValue(T value)
+        {
+            if(value == null) throw new ArgumentException("Value to delete cannot be null");
+            throw new NotImplementedException();
+        }
+        
+        /// <summary>
+        /// In order traversal algorithm
+        /// Values are appended to stringBuilder and outputted when done
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="stringBuilder"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        public string InOrderTraversal(Node<T> node, StringBuilder stringBuilder)
+        {
+            if(stringBuilder == null) throw new ArgumentException("stringBuilder cannot be null");
+            
+            if (node.Left != null)
+            {
+                InOrderTraversal(node.Left,stringBuilder);
+            }
+            
+            stringBuilder.Append(node.Value.ToString());
+
+            if (node.Right != null)
+            {
+                InOrderTraversal(node.Right,stringBuilder);
+            }
+
+            return stringBuilder.ToString();
+        }
+        
+        /// <summary>
+        /// Pre order traversal algorithm
+        /// Values are appended to stringBuilder and outputted when done
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="stringBuilder"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        public string PreOrderTraversal(Node<T> node, StringBuilder stringBuilder)
+        {
+            if(stringBuilder == null) throw new ArgumentException("stringBuilder cannot be null");
+            
+            stringBuilder.Append(node.Value.ToString());
+            if (node.Left != null)
+            {
+                PreOrderTraversal(node.Left,stringBuilder);
+            }
+
+            if (node.Right != null)
+            {
+                PreOrderTraversal(node.Right,stringBuilder);
+            }
+
+            return stringBuilder.ToString();
+        }
+        
+        /// <summary>
+        /// Post order traversal algorithm
+        /// Values are appended to stringBuilder and outputted when done
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="stringBuilder"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        public string PostOrderTraversal(Node<T> node, StringBuilder stringBuilder)
+        {
+            if(stringBuilder == null) throw new ArgumentException("stringBuilder cannot be null");
+            
+            if (node.Left != null)
+            {
+                PostOrderTraversal(node.Left,stringBuilder);
+            }
+
+            if (node.Right != null)
+            {
+                PostOrderTraversal(node.Right,stringBuilder);
+            }
+            
+            stringBuilder.Append(node.Value.ToString());
+
+            return stringBuilder.ToString();
         }
     }
 
