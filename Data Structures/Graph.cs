@@ -21,7 +21,7 @@ namespace Data_Structures
         /// Creates an graph with vertices based on vertex data
         /// but with no edges
         /// </summary>
-        /// <param name="vertexData"></param>
+        /// <param name="value"></param>
         public Graph(T value)
         {
             AddVertex(value, Count);
@@ -31,8 +31,8 @@ namespace Data_Structures
         /// Creates an graph with vertices based on vertex data
         /// but with no edges
         /// </summary>
-        /// <param name="vertexData"></param>
-        public Graph(T[] values)
+        /// <param name="values"></param>
+        public Graph(IEnumerable<T> values)
         {
             InitValues(values);
         }
@@ -42,9 +42,9 @@ namespace Data_Structures
         /// vertex data and edges
         /// Tuple must contain valid indexes for vertices
         /// </summary>
-        /// <param name="vertexData"></param>
+        /// <param name="values"></param>
         /// <param name="edges"></param>
-        public Graph(T[] values, Tuple<int, int>[] edges)
+        public Graph(IEnumerable<T> values, IEnumerable<Tuple<int, int>> edges)
         {
             InitValues(values);
             foreach (Tuple<int, int> edge in edges)
@@ -54,7 +54,7 @@ namespace Data_Structures
         }
 
         // Extracted helper function because it is used in multiple constructors
-        private void InitValues(T[] values)
+        private void InitValues(IEnumerable<T> values)
         {
             foreach (T value in values)
             {
@@ -63,9 +63,20 @@ namespace Data_Structures
 
             ResizeAdjacencyMatrix();
         }
-
+        
+        /// <summary>
+        /// All the vertices currently part of this graph
+        /// </summary>
         private List<Vertex<T>> Vertices { get; set; } = new List<Vertex<T>>();
-        public int[,] AdjancencyMatrix { get; private set; }
+        
+        /// <summary>
+        /// Adjacency matrix that describes the edges of the graph
+        /// </summary>
+        public int[,] AdjacencyMatrix { get; private set; }
+        
+        /// <summary>
+        /// The number of vertices in the graph
+        /// </summary>
         public int Count { get; private set; }
 
         /// <summary>
@@ -106,8 +117,8 @@ namespace Data_Structures
                 throw new IndexOutOfRangeException();
             }
 
-            AdjancencyMatrix[edge.Item1, edge.Item2] = weight;
-            AdjancencyMatrix[edge.Item2, edge.Item1] = weight;
+            AdjacencyMatrix[edge.Item1, edge.Item2] = weight;
+            AdjacencyMatrix[edge.Item2, edge.Item1] = weight;
         }
 
         /// <summary>
@@ -124,40 +135,46 @@ namespace Data_Structures
                 throw new IndexOutOfRangeException();
             }
 
-            return AdjancencyMatrix[from, to];
+            return AdjacencyMatrix[from, to];
         }
 
         /// <summary>
-        /// Resizes the adjancency matrix after an vertex is added
+        /// Resizes the adjacency matrix after an vertex is added
         /// </summary>
         private void ResizeAdjacencyMatrix()
         {
-            if (AdjancencyMatrix != null && AdjancencyMatrix.GetLength(0) != Count)
+            if (AdjacencyMatrix != null && AdjacencyMatrix.GetLength(0) != Count)
             {
                 int[,] newMatrix = new int[Count, Count];
 
-                for (int x = 0; x < AdjancencyMatrix.GetLength(0); x++)
+                for (int x = 0; x < AdjacencyMatrix.GetLength(0); x++)
                 {
-                    for (int y = 0; y < AdjancencyMatrix.GetLength(0); y++)
+                    for (int y = 0; y < AdjacencyMatrix.GetLength(0); y++)
                     {
-                        newMatrix[x, y] = AdjancencyMatrix[x, y];
+                        newMatrix[x, y] = AdjacencyMatrix[x, y];
                     }
                 }
 
-                AdjancencyMatrix = newMatrix;
+                AdjacencyMatrix = newMatrix;
             }
             else
             {
-                AdjancencyMatrix = new int[Count, Count];
+                AdjacencyMatrix = new int[Count, Count];
             }
         }
-
+        
+        /// <summary>
+        /// Returns a list with indexes of vertices that are connected to
+        /// the vertex with given index
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public List<int> GetAdjacentVertex(int index)
         {
             List<int> adjacentIndexes = new List<int>();
             for (int i = 0; i < Count; i++)
             {
-                int weight = AdjancencyMatrix[index, i];
+                int weight = AdjacencyMatrix[index, i];
                 if (weight > 0)
                 {
                     adjacentIndexes.Add(i);
@@ -199,6 +216,11 @@ namespace Data_Structures
             return stringBuilder.ToString();
         }
 
+        /// <summary>
+        /// Returns sequence string of data in graph when visiting all vertices
+        /// using Depth-First-Traversal
+        /// </summary>
+        /// <returns></returns>
         public string DepthFirstTraversal()
         {
             StringBuilder stringBuilder = new StringBuilder();
@@ -228,14 +250,26 @@ namespace Data_Structures
             return stringBuilder.ToString();
         }
 
+        /// <summary>
+        /// Returns the Vertex at a specific index
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
         public Vertex<T> AtIndex(int index)
         {
             return Vertices.Find(x => x.Index.Equals(index));
         }
+        
+        // TODO Implement Dijkstra Algorithm 
+        
+        // TODO Implement Floyd-Warschall Algorithm
     }
 
+    /// <summary>
+    /// Encapsulation class for a vertex in a graph
+    /// </summary>
+    /// <typeparam name="T">Generic type for satellite data</typeparam>
     public class Vertex<T>
-
     {
         public Vertex(int index, T data)
         {

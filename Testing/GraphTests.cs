@@ -61,8 +61,8 @@ namespace Testing
             Assert.Equal("B", graph.AtIndex(1).Data);
             Assert.Equal("C", graph.AtIndex(2).Data);
             
-            Assert.Equal(3, graph.AdjancencyMatrix.GetLength(0));
-            Assert.Equal(3, graph.AdjancencyMatrix.GetLength(1));
+            Assert.Equal(3, graph.AdjacencyMatrix.GetLength(0));
+            Assert.Equal(3, graph.AdjacencyMatrix.GetLength(1));
         }
         
         [Fact]
