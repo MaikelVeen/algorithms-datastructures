@@ -163,15 +163,40 @@ namespace Data_Structures
 
             return adjacentIndexes;
         }
-
-        public string BreadthFirstTraversal(StringBuilder stringBuilder)
+        
+        /// <summary>
+        /// Returns sequence string of data in graph when visiting all vertices
+        /// using Breadth-First-Traversal
+        /// </summary>
+        /// <returns></returns>
+        public string BreadthFirstTraversal()
         {
+            StringBuilder stringBuilder = new StringBuilder();
             Queue<int> queue = new Queue<int>();
-            throw  new NotImplementedException();
+            HashSet<int> visited = new HashSet<int>();
+            
+            queue.Enqueue(0);
+            while (queue.Count != 0)
+            {
+                int currentIndex = queue.Dequeue();
+                visited.Add(currentIndex);
+
+                stringBuilder.Append(AtIndex(currentIndex).Data.ToString());
                 
+                List<int> neighbours = GetAdjacentVertex(currentIndex);
+                foreach (int neighbourIndex in neighbours)
+                {
+                    if (!visited.Contains(neighbourIndex) && queue.Contains(neighbourIndex) == false)
+                    {
+                        queue.Enqueue(neighbourIndex);
+                    }
+                }
+            }
+
+            return stringBuilder.ToString();
         }
         
-        public string BreadFirstTraversal(StringBuilder stringBuilder)
+        public string DepthFirstTraversal()
         {
             throw  new NotImplementedException();
                 

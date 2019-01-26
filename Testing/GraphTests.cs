@@ -10,9 +10,9 @@ namespace Testing
     {
         private Graph<string> graph;
 
-        private readonly string[] graphData = new[] {"A", "B", "C", "D", "E", "F", "G"};
+        private readonly string[] graphData = {"A", "B", "C", "D", "E", "F", "G"};
 
-        private readonly Tuple<int, int>[] edges = new[]
+        private readonly Tuple<int, int>[] edges = 
         {
             new Tuple<int, int>(0,1),
             new Tuple<int, int>(1,2),
@@ -26,7 +26,7 @@ namespace Testing
 
         };
         
-        private readonly string[] graphDijkstra = new[] {"A", "B", "C", "D", "E", "F"};
+        private readonly string[] graphDijkstra =  {"A", "B", "C", "D", "E", "F"};
         
         private const string BreadthTraversal = "ABECFDG";
         private const string DepthTraversal = "ABCDGFE";
@@ -117,6 +117,13 @@ namespace Testing
             Assert.Contains(5, adjacentToC);
             Assert.Contains(6, adjacentToC);
             Assert.DoesNotContain(0, adjacentToA);
+        }
+
+        [Fact]
+        public void TestBreadthFirst()
+        {
+            graph = new Graph<string>(graphData, edges);
+            Assert.Equal(BreadthTraversal, graph.BreadthFirstTraversal());
         }
 
         #endregion
