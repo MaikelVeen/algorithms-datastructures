@@ -6,24 +6,78 @@ namespace Testing
 {
     public class QueueTest
     {
-        [Fact]
-        public void Test()
+        public QueueTest()
         {
-            var queue = new Queue<string>();
-            queue.Enqueue("1");
-            queue.Enqueue("2");
-            queue.Enqueue("3");
-            
-            Assert.Equal(queue.Peek(), "1");
-            
+            queue = new Queue<string>();
+        }
+
+        private readonly Queue<string> queue;
+
+        [Fact]
+        public void TestInit()
+        {
+            Assert.Null(queue.Peek());
+            Assert.Equal(0, queue.Count);
+            Assert.True(queue.IsEmpty());
+        }
+
+        [Fact]
+        public void EnqueueOne()
+        {
+            queue.Enqueue("Alpha");
+            Assert.Equal(1, queue.Count);
+            Assert.Equal("Alpha", queue.Peek());
+        }
+
+        [Fact]
+        public void EnqueueThree()
+        {
+            queue.Enqueue("Alpha");
+            queue.Enqueue("Beta");
+            queue.Enqueue("Charlie");
+            Assert.Equal(3, queue.Count);
+            Assert.Equal("Alpha", queue.Peek());
+        }
+
+        [Fact]
+        public void DequeueOne()
+        {
+            queue.Enqueue("Alpha");
             queue.Dequeue();
-            Assert.Equal(queue.Peek(), "2");
-            
+            Assert.Null(queue.Peek());
+            Assert.Equal(0, queue.Count);
+            Assert.True(queue.IsEmpty());
+        }
+
+        [Fact]
+        public void DequeueThree()
+        {
+            queue.Enqueue("Alpha");
+            queue.Enqueue("Beta");
+            queue.Enqueue("Charlie");
+
+            Assert.Equal("Alpha", queue.Peek());
             queue.Dequeue();
-            Assert.Equal(queue.Peek(), "3");
-            
+            Assert.Equal("Beta", queue.Peek());
             queue.Dequeue();
-            Assert.Throws<System.NullReferenceException>(() => queue.Peek());
+            Assert.Equal("Charlie", queue.Peek());
+            queue.Dequeue();
+            Assert.Null(queue.Peek());
+            Assert.Equal(0, queue.Count);
+            Assert.True(queue.IsEmpty());
+        }
+
+        [Fact]
+        public void TestContainsEmpty()
+        {
+            Assert.False(queue.Contains("Alpha"));
+        }
+        
+        [Fact]
+        public void TestContains()
+        {
+            queue.Enqueue("Alpha");
+            Assert.True(queue.Contains("Alpha"));
         }
     }
 }

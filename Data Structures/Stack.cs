@@ -6,40 +6,60 @@ namespace Data_Structures
 {
     public class Stack<T>
     {
-        private List<T> _data;
-        private int _top;
+        private List<T> Data { get; set; }
+        public int Count { get; private set; }
 
         public Stack()
         {
-            _data = new List<T>();
-            _top = 0;
+            Data = new List<T>();
         }
 
-        public void Push<U>(U element) where U : T
+        /// <summary>
+        /// Adds an element on top of the stack
+        /// </summary>
+        /// <param name="element"></param>
+        public void Push(T element)
         {
-            _data.Add(element);
-            _top += 1;
+            Data.Add(element);
+            Count++;
         }
 
-        public void Pop()
+        /// <summary>
+        /// Returns the element currently on top of the stack
+        /// and subsequently removes it
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public T Pop()
         {
-            if (_top == 0)
+            if (Count == 0)
             {
                 throw new Exception("Underflow in Stack");
             }
 
-            _data.RemoveAt(_top - 1);
-            _top -= 1;
+            T dataToReturn = Data[Count - 1];
+            Data.RemoveAt(Count - 1);
+            Count--;
+            return dataToReturn;
         }
 
-        public T Peek()
-        {
-            return _data.ElementAt(_top - 1);
-        }
+        /// <summary>
+        /// Returns value currently on top of the stack
+        /// </summary>
+        /// <returns></returns>
+        public T Peek() => Data.ElementAt(Count - 1);
 
-        public int Size()
-        {
-            return _top;
-        }
+        /// <summary>
+        /// Determines whether value is in stack or not
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public bool Contains(T value) => Data.Contains(value);
+
+        /// <summary>
+        /// Returns an array with all the elements of the stack
+        /// </summary>
+        /// <returns></returns>
+        public T[] ToArray() => Data.ToArray();
     }
 }

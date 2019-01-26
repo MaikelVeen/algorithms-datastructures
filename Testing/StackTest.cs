@@ -6,52 +6,59 @@ namespace Testing
 {
     public class StackTest
     {
+        public StackTest()
+        {
+            stringStack = new Stack<string>();
+        }
+
+        private readonly Stack<string> stringStack;
+
         [Fact]
         public void StackPush()
         {
-            var stringStack = new Stack<string>();
-            stringStack.Push("Test");
-            
-            Assert.Equal(stringStack.Peek(),"Test");
+            stringStack.Push("Alpha");
+            Assert.Equal("Alpha", stringStack.Peek());
         }
 
         [Fact]
         public void StackPushSize()
         {
-            var stringStack = new Stack<string>();
-            stringStack.Push("Test");
-            
-            Assert.Equal(stringStack.Size(),1);
+            stringStack.Push("Alpha");
+            Assert.Equal(1, stringStack.Count);
+        }
+
+        [Fact]
+        public void StackPushSizeMultiple()
+        {
+            stringStack.Push("Alpha");
+            stringStack.Push("Beta");
+            stringStack.Push("Charlie");
+            Assert.Equal(3, stringStack.Count);
         }
 
         [Fact]
         public void StackPop()
         {
-            var stringStack = new Stack<string>();
-            stringStack.Push("Test");
-            stringStack.Push("ExpectedValue");
-            stringStack.Push("AnotherOne");
-            stringStack.Pop();
-            
-            Assert.Equal(stringStack.Peek(),"ExpectedValue");
+            stringStack.Push("Alpha");
+            stringStack.Push("Beta");
+            stringStack.Push("Charlie");
+            Assert.Equal("Charlie", stringStack.Pop());
+            Assert.Equal("Beta", stringStack.Peek());
         }
-        
+
         [Fact]
         public void StackPopSize()
         {
-            var stringStack = new Stack<string>();
-            stringStack.Push("Test");
-            stringStack.Push("ExpectedValue");
-            stringStack.Push("AnotherOne");
+            stringStack.Push("Alpha");
+            stringStack.Push("Beta");
+            stringStack.Push("Charlie");
             stringStack.Pop();
-            
-            Assert.Equal(stringStack.Size(),2);
+            Assert.Equal(2, stringStack.Count);
         }
-        
+
         [Fact]
         public void StackPopEmpty()
         {
-            var stringStack = new Stack<string>();
             Assert.Throws<Exception>(() => stringStack.Pop());
         }
     }
