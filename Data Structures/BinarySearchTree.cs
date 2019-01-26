@@ -116,16 +116,145 @@ namespace Data_Structures
 
 
         /// <summary>
-        /// Returns true is value is found and successfully deleted
-        /// Otherwise false
+        /// Returns true when value is found and deleted otherwise returns false
         /// </summary>
         /// <param name="value"></param>
+        /// <param name="start"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentException"></exception>
-        public bool DeleteValue(T value)
+        public bool DeleteValue(T value, Node<T> start)
         {
             if (value == null) throw new ArgumentException("Value to delete cannot be null");
-            throw new NotImplementedException();
+
+            // The node that needs to be delete
+            Node<T> node = start;
+
+            // Find the node
+            while (node != null)
+            {
+                if (node.Value.CompareTo(value) == 0)
+                {
+                    break;
+                }
+
+                node = node.Value.CompareTo(value) > 0 ? node.Left : node.Right;
+            }
+
+            if (node == null) return false;
+
+            // Delete a leaf
+            if (node.Left == null && node.Right == null)
+            {
+                DeleteLeaf(node);
+            }
+            
+            // Delete node with one child
+            if ((node.Left != null && node.Right == null) || (node.Right != null && node.Left == null))
+            {
+                DeleteNodeOneChild(node);
+            }
+            
+            // Delete a node with two children
+            if (node.Left != null && node.Right != null)
+            {
+                DeleteNodeWithTwoChildren(node);
+            }
+
+            return true;
+        }
+
+        // Helper function for leaf deletion
+        private static void DeleteLeaf(Node<T> node)
+        {
+            if (node.Parent.Left != null && node.Parent.Left.Equals(node))
+            {
+                node.Parent.Left = null;
+            }
+
+            if (node.Parent.Right != null && node.Parent.Right.Equals(node))
+            {
+                node.Parent.Right = null;
+            }
+        }
+
+        // Helper function that deletes a node with one child
+        private static void DeleteNodeOneChild(Node<T> node)
+        {
+            Node<T> replacementNode = null;
+            if (node.Left != null && node.Right == null)
+            {
+                replacementNode = node.Left;
+            }
+
+            else if (node.Right != null && node.Left == null)
+            {
+                replacementNode = node.Right;
+            }
+
+            if (replacementNode == null)
+            {
+                throw new InvalidOperationException();
+            }
+
+            if (IsLeftChild(node))
+            {
+                node.Parent.Left = replacementNode;
+            }
+            else
+            {
+                node.Parent.Right = replacementNode;
+            }
+        }
+
+        // Checks whether or node is the left child relative to its parent
+        private static bool IsLeftChild(Node<T> node)
+        {
+            return node.Parent.Left != null && node.Parent.Left.Value.Equals(node.Value);
+        }
+
+        // Helper function for deletion of node with two children
+        private void DeleteNodeWithTwoChildren(Node<T> node)
+        {
+            Node<T> replacement = FindInOrderSuccesor(node);
+            node.Value = replacement.Value;
+
+            DeleteValue(replacement.Value, node.Left);
+            DeleteValue(replacement.Value, node.Right);
+        }
+
+        /// <summary>
+        /// Finds the in order successor of a node
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
+        public Node<T> FindInOrderSuccesor(Node<T> node)
+        {
+            if (node.Right != null)
+            {
+                return MinValue(node.Right);
+            }
+
+            Node<T> parent = node.Parent;
+            while (parent != null && node == parent.Right)
+            {
+                node = parent;
+                parent = parent.Parent;
+            }
+
+            return parent;
+        }
+
+
+        private static Node<T> MinValue(Node<T> node)
+        {
+            Node<T> current = node;
+
+            while (current.Left != null)
+            {
+                current = current.Left;
+            }
+
+            return current;
         }
 
         /// <summary>

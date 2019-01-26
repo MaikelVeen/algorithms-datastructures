@@ -10,10 +10,10 @@ namespace Testing
         private BinarySearchTree<int> integerTree;
         private BinarySearchTree<string> stringTree;
 
-        private string[] traversalValues;
-        private const string preOrderExpected = "FBADCEGIH";
-        private const string postOrderExpected = "ACEDBHIGF";
-        private const string inOrderExpected = "ABCDEFGHI";
+        private readonly string[] traversalValues;
+        private const string PreOrderExpected = "FBADCEGIH";
+        private const string PostOrderExpected = "ACEDBHIGF";
+        private const string InOrderExpected = "ABCDEFGHI";
 
         public BinarySearchTreeTests()
         {
@@ -214,25 +214,25 @@ namespace Testing
             StringBuilder stringBuilder = new StringBuilder();
             stringTree = new BinarySearchTree<string>(traversalValues);
 
-            Assert.Equal(preOrderExpected, stringTree.PreOrderTraversal(stringTree.Root, stringBuilder));
+            Assert.Equal(PreOrderExpected, stringTree.PreOrderTraversal(stringTree.Root, stringBuilder));
         }
-        
+
         [Fact]
         public void TestPostOrderTraversal()
         {
             StringBuilder stringBuilder = new StringBuilder();
             stringTree = new BinarySearchTree<string>(traversalValues);
 
-            Assert.Equal(postOrderExpected, stringTree.PostOrderTraversal(stringTree.Root, stringBuilder));
+            Assert.Equal(PostOrderExpected, stringTree.PostOrderTraversal(stringTree.Root, stringBuilder));
         }
-        
+
         [Fact]
         public void TestInOrderTraversal()
         {
             StringBuilder stringBuilder = new StringBuilder();
             stringTree = new BinarySearchTree<string>(traversalValues);
 
-            Assert.Equal(inOrderExpected, stringTree.InOrderTraversal(stringTree.Root, stringBuilder));
+            Assert.Equal(InOrderExpected, stringTree.InOrderTraversal(stringTree.Root, stringBuilder));
         }
 
         [Fact]
@@ -241,10 +241,9 @@ namespace Testing
             Assert.Throws<ArgumentException>(() => stringTree.InOrderTraversal(stringTree.Root, null));
             Assert.Throws<ArgumentException>(() => stringTree.PreOrderTraversal(stringTree.Root, null));
             Assert.Throws<ArgumentException>(() => stringTree.PostOrderTraversal(stringTree.Root, null));
-        }        
-        
-        #endregion
+        }
 
+        #endregion
 
         #region Search and Contains tests
 
@@ -253,7 +252,7 @@ namespace Testing
         {
             Assert.Null(integerTree.Search(10));
         }
-        
+
         [Fact]
         public void SearchLeft()
         {
@@ -270,24 +269,24 @@ namespace Testing
         {
             integerTree.Insert(10);
             integerTree.Insert(15);
-            
+
             Node<int> foundNode = integerTree.Search(15);
             Assert.NotNull(foundNode);
             Assert.Equal(15, foundNode.Value);
         }
-        
+
         [Fact]
         public void ContainsEmpty()
         {
             Assert.False(integerTree.Contains(10));
         }
-        
+
         [Fact]
         public void ContainsLeft()
         {
             integerTree.Insert(10);
             integerTree.Insert(5);
-            
+
             Assert.True(integerTree.Contains(5));
         }
 
@@ -296,10 +295,94 @@ namespace Testing
         {
             integerTree.Insert(10);
             integerTree.Insert(15);
-            
+
             Assert.True(integerTree.Contains(15));
         }
 
+        #endregion
+
+        #region Deletion Tests
+
+        [Fact]
+        public void DeleteLeafTest()
+        {
+            stringTree = new BinarySearchTree<string>(traversalValues);
+            Assert.True(stringTree.DeleteValue("A",stringTree.Root));
+            Assert.False(stringTree.Contains("A"));
+        }
+
+        [Fact]
+        public void DeleteLeafTest2()
+        {
+            stringTree = new BinarySearchTree<string>(traversalValues);
+            Assert.True(stringTree.DeleteValue("H",stringTree.Root));
+            Assert.False(stringTree.Contains("H"));
+        }
+
+        [Fact]
+        public void DeleteLeafTest3()
+        {
+            stringTree = new BinarySearchTree<string>(traversalValues);
+            Assert.True(stringTree.DeleteValue("C",stringTree.Root));
+            Assert.False(stringTree.Contains("C"));
+        }
+
+        [Fact]
+        public void DeleteLeafTest4()
+        {
+            stringTree = new BinarySearchTree<string>(traversalValues);
+            Assert.True(stringTree.DeleteValue("E",stringTree.Root));
+            Assert.False(stringTree.Contains("E"));
+        }
+        
+        [Fact]
+        public void DeleteNodeWithOneChild()
+        {
+            stringTree = new BinarySearchTree<string>(traversalValues);
+            Assert.True(stringTree.DeleteValue("I",stringTree.Root));
+            Assert.False(stringTree.Contains("I"));
+            Assert.Equal("H", stringTree.Root.Right.Right.Value);
+        }
+
+        [Fact]
+        public void TestFindInOrderSuccesor()
+        {
+            stringTree = new BinarySearchTree<string>(traversalValues);
+            Assert.Equal("C", stringTree.FindInOrderSuccesor(stringTree.Root.Left).Value);
+        }
+        
+        [Fact]
+        public void TestFindInOrderSuccesor2()
+        {
+            stringTree = new BinarySearchTree<string>(traversalValues);
+            Assert.Equal("G", stringTree.FindInOrderSuccesor(stringTree.Root).Value);
+        }
+        
+        [Fact]
+        public void TestFindInOrderSuccesor3()
+        {
+            stringTree = new BinarySearchTree<string>(traversalValues);
+            Assert.Equal("E", stringTree.FindInOrderSuccesor(stringTree.Root.Left.Right).Value);
+        }
+
+        [Fact]
+        public void TestDeleteWithTwoChildren1()
+        {
+            stringTree = new BinarySearchTree<string>(traversalValues);
+            Assert.True(stringTree.DeleteValue("B", stringTree.Root));
+            Assert.Equal("C", stringTree.Root.Left.Value);
+            Assert.Null(stringTree.Root.Left.Right.Left);
+            Assert.False(stringTree.Contains("B"));
+        }
+        
+        [Fact]
+        public void TestDeleteWithTwoChildren2()
+        {
+            stringTree = new BinarySearchTree<string>(traversalValues);
+            Assert.True(stringTree.DeleteValue("F", stringTree.Root));
+            Assert.Equal("G", stringTree.Root.Value);
+            Assert.False(stringTree.Contains("F"));
+        }
 
         #endregion
     }
