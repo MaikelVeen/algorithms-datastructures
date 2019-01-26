@@ -4,30 +4,54 @@ namespace Data_Structures
 {
     public class Queue<T> where T: IComparable
     {
-        private DoublyLinkedList<T> _list = new DoublyLinkedList<T>();
-        
+        private readonly DoublyLinkedList<T> list = new DoublyLinkedList<T>();
+        public int Count { get; private set; }
+
+        /// <summary>
+        /// Return the item at the front of the queue
+        /// </summary>
+        /// <returns></returns>
         public T Peek()
         {
-            return _list.Head.Value;
+            return list.Head == null ? default(T) : list.Head.Value;
         }
-
-        public void Enqueue<U>(U element) where U : T
+        
+        /// <summary>
+        /// Appends an item at the end of the queue
+        /// </summary>
+        /// <param name="element"></param>
+        public void Enqueue(T element) 
         {
-            _list.InsertEnd(element);
+            list.InsertEnd(element);
+            Count++;
         }
-
-        public void Dequeue() 
+        
+        /// <summary>
+        /// Removes an element at the front of the queue
+        /// </summary>
+        public void Dequeue()
         {
-            if (_list.Head.Next != null)
+            if (list.Head.Next != null)
             {
-                _list.Head.Next.Previous = null;
-                _list.Head = _list.Head.Next;
+                list.Head.Next.Previous = null;
+                list.Head = list.Head.Next;
+                Count--;
             }
             else
             {
-                _list.Head = null;
-                _list.Tail = null;
+                list.Head = null;
+                list.Tail = null;
+                Count--;
             }
-        } 
+        }
+        
+        /// <summary>
+        /// Returns whether or not the list is empty
+        /// </summary>
+        /// <returns></returns>
+        public bool IsEmpty()
+        {
+            return list.Head == null && list.Tail == null;
+        }
     }
 }

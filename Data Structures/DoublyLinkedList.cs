@@ -20,7 +20,7 @@ namespace Data_Structures
 
         public DoublyLinkedList(T initialValue)
         {
-            var initialNode = new DoublyNode<T>()
+            DoublyNode<T> initialNode = new DoublyNode<T>
             {
                 Value = initialValue,
                 Next = null,
@@ -34,9 +34,9 @@ namespace Data_Structures
         public DoublyNode<T> Tail { get; set; }
 
 
-        public void InsertAfter<U>(DoublyNode<T> node, U value) where U : T
+        public void InsertAfter(DoublyNode<T> node, T value) 
         {
-            var newNode = new DoublyNode<T>()
+            DoublyNode<T> newNode = new DoublyNode<T>()
             {
                 Value = value,
                 Previous = node
@@ -55,9 +55,9 @@ namespace Data_Structures
             node.Next = newNode;
         }
 
-        public void InsertBefore<U>(DoublyNode<T> node, U value) where U : T
+        public void InsertBefore(DoublyNode<T> node, T value) 
         {
-            var newNode = new DoublyNode<T>()
+            DoublyNode<T> newNode = new DoublyNode<T>()
             {
                 Value = value,
                 Next = node
@@ -79,7 +79,7 @@ namespace Data_Structures
 
         public void InsertBegin<U>(U value) where U : T
         {
-            var newNode = new DoublyNode<T>()
+            DoublyNode<T> newNode = new DoublyNode<T>()
             {
                 Value = value,
             };
@@ -97,7 +97,7 @@ namespace Data_Structures
             }
         }
 
-        public void InsertEnd<U>(U value) where U : T
+        public void InsertEnd(T value) 
         {
             if (Tail == null)
             {
@@ -109,12 +109,7 @@ namespace Data_Structures
             }
         }
 
-        /// <summary>
-        /// Removes the first occurence of node with given value
-        /// </summary>
-        /// <param name="value"></param>
-        /// <typeparam name="U"></typeparam>
-        public void RemoveFirst<U>(U value) where U : T
+        public void RemoveFirst(T value) 
         {
             // TODO: Implement and test this method
         }
