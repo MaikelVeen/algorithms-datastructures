@@ -125,6 +125,13 @@ namespace Testing
             graph = new Graph<string>(graphData, edges);
             Assert.Equal(BreadthTraversal, graph.BreadthFirstTraversal());
         }
+        
+        [Fact]
+        public void TestDepthFirst()
+        {
+            graph = new Graph<string>(graphData, edges);
+            Assert.Equal(DepthTraversal, graph.DepthFirstTraversal());
+        }
 
         #endregion
 

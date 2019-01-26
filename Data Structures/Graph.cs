@@ -15,9 +15,8 @@ namespace Data_Structures
         /// </summary>
         public Graph()
         {
-            
         }
-        
+
         /// <summary>
         /// Creates an graph with vertices based on vertex data
         /// but with no edges
@@ -27,7 +26,7 @@ namespace Data_Structures
         {
             AddVertex(value, Count);
         }
-        
+
         /// <summary>
         /// Creates an graph with vertices based on vertex data
         /// but with no edges
@@ -48,12 +47,12 @@ namespace Data_Structures
         public Graph(T[] values, Tuple<int, int>[] edges)
         {
             InitValues(values);
-            foreach (Tuple<int,int> edge in edges)
+            foreach (Tuple<int, int> edge in edges)
             {
                 SetEdge(edge);
             }
         }
-        
+
         // Extracted helper function because it is used in multiple constructors
         private void InitValues(T[] values)
         {
@@ -61,13 +60,14 @@ namespace Data_Structures
             {
                 AddVertex(value, Count, false);
             }
+
             ResizeAdjacencyMatrix();
         }
 
         private List<Vertex<T>> Vertices { get; set; } = new List<Vertex<T>>();
         public int[,] AdjancencyMatrix { get; private set; }
-        public int Count { get; private set; } 
-        
+        public int Count { get; private set; }
+
         /// <summary>
         /// Adds a new vertex to the graph, returns the index of the added vertex
         /// </summary>
@@ -81,14 +81,17 @@ namespace Data_Structures
             return index;
         }
 
-        private void AddVertex(T data,int index, bool automaticResize = true)
+        private void AddVertex(T data, int index, bool automaticResize = true)
         {
             Count++;
             Vertex<T> vertex = new Vertex<T>(index, data);
             Vertices.Add(vertex);
-            if(automaticResize) {ResizeAdjacencyMatrix();}        
+            if (automaticResize)
+            {
+                ResizeAdjacencyMatrix();
+            }
         }
-        
+
         /// <summary>
         /// Adds an edge between two indexed vertices with a given weight to the graph.
         /// Indexes must exist.
@@ -96,17 +99,17 @@ namespace Data_Structures
         /// </summary>
         /// <param name="edge">Tuple that describes from which index to which index</param>
         /// <param name="weight"></param>
-        public void SetEdge(Tuple<int,int> edge, int weight=1)
+        public void SetEdge(Tuple<int, int> edge, int weight = 1)
         {
             if (edge.Item1 > Count - 1 || edge.Item2 > Count - 1)
             {
                 throw new IndexOutOfRangeException();
             }
-            
+
             AdjancencyMatrix[edge.Item1, edge.Item2] = weight;
             AdjancencyMatrix[edge.Item2, edge.Item1] = weight;
         }
-        
+
         /// <summary>
         /// Returns the weight of edge between two vertexes
         /// </summary>
@@ -123,7 +126,7 @@ namespace Data_Structures
 
             return AdjancencyMatrix[from, to];
         }
-        
+
         /// <summary>
         /// Resizes the adjancency matrix after an vertex is added
         /// </summary>
@@ -131,7 +134,7 @@ namespace Data_Structures
         {
             if (AdjancencyMatrix != null && AdjancencyMatrix.GetLength(0) != Count)
             {
-                int[,] newMatrix = new int[Count,Count];
+                int[,] newMatrix = new int[Count, Count];
 
                 for (int x = 0; x < AdjancencyMatrix.GetLength(0); x++)
                 {
@@ -145,7 +148,7 @@ namespace Data_Structures
             }
             else
             {
-                AdjancencyMatrix = new int[Count,Count];
+                AdjancencyMatrix = new int[Count, Count];
             }
         }
 
@@ -163,7 +166,7 @@ namespace Data_Structures
 
             return adjacentIndexes;
         }
-        
+
         /// <summary>
         /// Returns sequence string of data in graph when visiting all vertices
         /// using Breadth-First-Traversal
@@ -174,7 +177,7 @@ namespace Data_Structures
             StringBuilder stringBuilder = new StringBuilder();
             Queue<int> queue = new Queue<int>();
             HashSet<int> visited = new HashSet<int>();
-            
+
             queue.Enqueue(0);
             while (queue.Count != 0)
             {
@@ -182,7 +185,7 @@ namespace Data_Structures
                 visited.Add(currentIndex);
 
                 stringBuilder.Append(AtIndex(currentIndex).Data.ToString());
-                
+
                 List<int> neighbours = GetAdjacentVertex(currentIndex);
                 foreach (int neighbourIndex in neighbours)
                 {
@@ -195,11 +198,34 @@ namespace Data_Structures
 
             return stringBuilder.ToString();
         }
-        
+
         public string DepthFirstTraversal()
         {
-            throw  new NotImplementedException();
-                
+            StringBuilder stringBuilder = new StringBuilder();
+            HashSet<int> visited = new HashSet<int>();
+            Stack<int> stack = new Stack<int>();
+
+            stack.Push(0);
+            while (stack.Count != 0)
+            {
+                int currentVertex = stack.Pop();
+                if (visited.Contains(currentVertex)) continue;
+
+                visited.Add(currentVertex);
+                stringBuilder.Append(AtIndex(currentVertex).Data.ToString());
+
+                List<int> neighbours = GetAdjacentVertex(currentVertex);
+                neighbours.Reverse();
+                foreach (int neighbourIndex in neighbours)
+                {
+                    if (!visited.Contains(neighbourIndex) && stack.Contains(neighbourIndex) == false)
+                    {
+                        stack.Push(neighbourIndex);
+                    }
+                }
+            }
+
+            return stringBuilder.ToString();
         }
 
         public Vertex<T> AtIndex(int index)
@@ -208,7 +234,7 @@ namespace Data_Structures
         }
     }
 
-    public class Vertex<T> 
+    public class Vertex<T>
 
     {
         public Vertex(int index, T data)
