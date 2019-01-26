@@ -244,5 +244,63 @@ namespace Testing
         }        
         
         #endregion
+
+
+        #region Search and Contains tests
+
+        [Fact]
+        public void SearchEmpty()
+        {
+            Assert.Null(integerTree.Search(10));
+        }
+        
+        [Fact]
+        public void SearchLeft()
+        {
+            integerTree.Insert(10);
+            integerTree.Insert(5);
+
+            Node<int> foundNode = integerTree.Search(5);
+            Assert.NotNull(foundNode);
+            Assert.Equal(5, foundNode.Value);
+        }
+
+        [Fact]
+        public void SearchRight()
+        {
+            integerTree.Insert(10);
+            integerTree.Insert(15);
+            
+            Node<int> foundNode = integerTree.Search(15);
+            Assert.NotNull(foundNode);
+            Assert.Equal(15, foundNode.Value);
+        }
+        
+        [Fact]
+        public void ContainsEmpty()
+        {
+            Assert.False(integerTree.Contains(10));
+        }
+        
+        [Fact]
+        public void ContainsLeft()
+        {
+            integerTree.Insert(10);
+            integerTree.Insert(5);
+            
+            Assert.True(integerTree.Contains(5));
+        }
+
+        [Fact]
+        public void ContainsRight()
+        {
+            integerTree.Insert(10);
+            integerTree.Insert(15);
+            
+            Assert.True(integerTree.Contains(15));
+        }
+
+
+        #endregion
     }
 }

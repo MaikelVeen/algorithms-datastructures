@@ -83,7 +83,7 @@ namespace Data_Structures
                 }
             }
         }
-    
+
         /// <summary>
         /// Returns node with given value, Returns null if not found
         /// </summary>
@@ -92,10 +92,29 @@ namespace Data_Structures
         /// <exception cref="ArgumentException">Value to search for cannot be null</exception>
         public Node<T> Search(T value)
         {
-            if(value == null) throw new ArgumentException("Value to search for cannot be null");
-            throw new NotImplementedException();
+            if (value == null) throw new ArgumentException("Value to search for cannot be null");
+            Node<T> currentNode = Root;
+
+            while (currentNode != null)
+            {
+                if (currentNode.Value.CompareTo(value) == 0)
+                {
+                    return currentNode;
+                }
+
+                currentNode = currentNode.Value.CompareTo(value) > 0 ? currentNode.Left : currentNode.Right;
+            }
+
+            return currentNode;
         }
-        
+
+        public bool Contains(T value)
+        {
+            Node<T> node = Search(value);
+            return node != null;
+        }
+
+
         /// <summary>
         /// Returns true is value is found and successfully deleted
         /// Otherwise false
@@ -105,10 +124,10 @@ namespace Data_Structures
         /// <exception cref="ArgumentException"></exception>
         public bool DeleteValue(T value)
         {
-            if(value == null) throw new ArgumentException("Value to delete cannot be null");
+            if (value == null) throw new ArgumentException("Value to delete cannot be null");
             throw new NotImplementedException();
         }
-        
+
         /// <summary>
         /// In order traversal algorithm
         /// Values are appended to stringBuilder and outputted when done
@@ -119,23 +138,23 @@ namespace Data_Structures
         /// <exception cref="ArgumentException"></exception>
         public string InOrderTraversal(Node<T> node, StringBuilder stringBuilder)
         {
-            if(stringBuilder == null) throw new ArgumentException("stringBuilder cannot be null");
-            
+            if (stringBuilder == null) throw new ArgumentException("stringBuilder cannot be null");
+
             if (node.Left != null)
             {
-                InOrderTraversal(node.Left,stringBuilder);
+                InOrderTraversal(node.Left, stringBuilder);
             }
-            
+
             stringBuilder.Append(node.Value.ToString());
 
             if (node.Right != null)
             {
-                InOrderTraversal(node.Right,stringBuilder);
+                InOrderTraversal(node.Right, stringBuilder);
             }
 
             return stringBuilder.ToString();
         }
-        
+
         /// <summary>
         /// Pre order traversal algorithm
         /// Values are appended to stringBuilder and outputted when done
@@ -146,22 +165,22 @@ namespace Data_Structures
         /// <exception cref="ArgumentException"></exception>
         public string PreOrderTraversal(Node<T> node, StringBuilder stringBuilder)
         {
-            if(stringBuilder == null) throw new ArgumentException("stringBuilder cannot be null");
-            
+            if (stringBuilder == null) throw new ArgumentException("stringBuilder cannot be null");
+
             stringBuilder.Append(node.Value.ToString());
             if (node.Left != null)
             {
-                PreOrderTraversal(node.Left,stringBuilder);
+                PreOrderTraversal(node.Left, stringBuilder);
             }
 
             if (node.Right != null)
             {
-                PreOrderTraversal(node.Right,stringBuilder);
+                PreOrderTraversal(node.Right, stringBuilder);
             }
 
             return stringBuilder.ToString();
         }
-        
+
         /// <summary>
         /// Post order traversal algorithm
         /// Values are appended to stringBuilder and outputted when done
@@ -172,18 +191,18 @@ namespace Data_Structures
         /// <exception cref="ArgumentException"></exception>
         public string PostOrderTraversal(Node<T> node, StringBuilder stringBuilder)
         {
-            if(stringBuilder == null) throw new ArgumentException("stringBuilder cannot be null");
-            
+            if (stringBuilder == null) throw new ArgumentException("stringBuilder cannot be null");
+
             if (node.Left != null)
             {
-                PostOrderTraversal(node.Left,stringBuilder);
+                PostOrderTraversal(node.Left, stringBuilder);
             }
 
             if (node.Right != null)
             {
-                PostOrderTraversal(node.Right,stringBuilder);
+                PostOrderTraversal(node.Right, stringBuilder);
             }
-            
+
             stringBuilder.Append(node.Value.ToString());
 
             return stringBuilder.ToString();
