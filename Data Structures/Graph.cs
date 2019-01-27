@@ -52,6 +52,22 @@ namespace Data_Structures
                 SetEdge(edge);
             }
         }
+        
+        /// <summary>
+        /// Creates a graph with vertices and edges based on given
+        /// vertex data and edges
+        /// Tuple must contains also the edge weight
+        /// </summary>
+        /// <param name="values"></param>
+        /// <param name="edges"></param>
+        public Graph(IEnumerable<T> values, IEnumerable<Tuple<int, int,int>> edges)
+        {
+            InitValues(values);
+            foreach (Tuple<int, int,int> edge in edges)
+            {
+                SetEdge(edge);
+            }
+        }
 
         // Extracted helper function because it is used in multiple constructors
         private void InitValues(IEnumerable<T> values)
@@ -119,6 +135,23 @@ namespace Data_Structures
 
             AdjacencyMatrix[edge.Item1, edge.Item2] = weight;
             AdjacencyMatrix[edge.Item2, edge.Item1] = weight;
+        }
+        
+        /// <summary>
+        /// Adds an edge based on a tuple where the third element represents the weight of the
+        /// edge
+        /// </summary>
+        /// <param name="edgeWeight"></param>
+        /// <exception cref="IndexOutOfRangeException"></exception>
+        public void SetEdge(Tuple<int, int, int> edgeWeight)
+        {
+            if (edgeWeight.Item1 > Count - 1 || edgeWeight.Item2 > Count - 1)
+            {
+                throw new IndexOutOfRangeException();
+            }
+            
+            AdjacencyMatrix[edgeWeight.Item1, edgeWeight.Item2] = edgeWeight.Item3;
+            AdjacencyMatrix[edgeWeight.Item2, edgeWeight.Item1] = edgeWeight.Item3;
         }
 
         /// <summary>
@@ -259,8 +292,11 @@ namespace Data_Structures
         {
             return Vertices.Find(x => x.Index.Equals(index));
         }
-        
-        // TODO Implement Dijkstra Algorithm 
+
+        public Tuple<int[], int[]> Dijkstra()
+        {
+            throw new NotImplementedException();
+        }
         
         // TODO Implement Floyd-Warschall Algorithm
     }
