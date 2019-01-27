@@ -52,7 +52,7 @@ namespace Data_Structures
                 SetEdge(edge);
             }
         }
-        
+
         /// <summary>
         /// Creates a graph with vertices and edges based on given
         /// vertex data and edges
@@ -60,10 +60,10 @@ namespace Data_Structures
         /// </summary>
         /// <param name="values"></param>
         /// <param name="edges"></param>
-        public Graph(IEnumerable<T> values, IEnumerable<Tuple<int, int,int>> edges)
+        public Graph(IEnumerable<T> values, IEnumerable<Tuple<int, int, int>> edges)
         {
             InitValues(values);
-            foreach (Tuple<int, int,int> edge in edges)
+            foreach (Tuple<int, int, int> edge in edges)
             {
                 SetEdge(edge);
             }
@@ -79,17 +79,17 @@ namespace Data_Structures
 
             ResizeAdjacencyMatrix();
         }
-        
+
         /// <summary>
         /// All the vertices currently part of this graph
         /// </summary>
         private List<Vertex<T>> Vertices { get; set; } = new List<Vertex<T>>();
-        
+
         /// <summary>
         /// Adjacency matrix that describes the edges of the graph
         /// </summary>
         public int[,] AdjacencyMatrix { get; private set; }
-        
+
         /// <summary>
         /// The number of vertices in the graph
         /// </summary>
@@ -136,7 +136,7 @@ namespace Data_Structures
             AdjacencyMatrix[edge.Item1, edge.Item2] = weight;
             AdjacencyMatrix[edge.Item2, edge.Item1] = weight;
         }
-        
+
         /// <summary>
         /// Adds an edge based on a tuple where the third element represents the weight of the
         /// edge
@@ -149,7 +149,7 @@ namespace Data_Structures
             {
                 throw new IndexOutOfRangeException();
             }
-            
+
             AdjacencyMatrix[edgeWeight.Item1, edgeWeight.Item2] = edgeWeight.Item3;
             AdjacencyMatrix[edgeWeight.Item2, edgeWeight.Item1] = edgeWeight.Item3;
         }
@@ -195,7 +195,7 @@ namespace Data_Structures
                 AdjacencyMatrix = new int[Count, Count];
             }
         }
-        
+
         /// <summary>
         /// Returns a list with indexes of vertices that are connected to
         /// the vertex with given index
@@ -293,11 +293,80 @@ namespace Data_Structures
             return Vertices.Find(x => x.Index.Equals(index));
         }
 
-        public Tuple<int[], int[]> Dijkstra()
-        {
-            throw new NotImplementedException();
+        /// <summary>
+        /// For a given source vertex calculates the shortest path between that
+        /// vertex and any other vertex in the path
+        /// </summary>
+        /// <param name="sourceIndex"></param>
+        /// <returns>A tuple where the first item represent the distance array and the second item the previous array</returns>
+        public Tuple<int[], int[]> Dijkstra(int sourceIndex)
+        {    
+            // Initialise set Q, dist[] and prev[]
+            HashSet<int> unvisitedVertices = new HashSet<int>();
+            int[] distance = new int[Vertices.Count];
+            int[] previous = new int[Vertices.Count];
+
+            foreach (Vertex<T> vertex in Vertices)
+            {
+                // Distance is initially maximum
+                distance[vertex.Index] = int.MaxValue;
+                previous[vertex.Index] = -1;
+                
+                // All vertices are unvisited in the beginning
+                unvisitedVertices.Add(vertex.Index);
+            }
+            
+            // Set the distance to the source to zero
+            distance[sourceIndex] = 0;
+            while (unvisitedVertices.Count != 0)
+            {
+                // Pick the unvisited vertex with the lowest cost
+                int current = FindMinimumIndex(distance, unvisitedVertices);
+                unvisitedVertices.Remove(current); // Mark as visited
+
+                List<int> neighbours = GetAdjacentVertex(current);
+                
+                // Calculate the distance through vertex to each unvisited neighbour
+                foreach (int neighbour in neighbours)
+                {
+                    // If neighbour is marked as visited, continue to next
+                    if (!unvisitedVertices.Contains(neighbour)) continue;
+
+                    int alternativeCost = distance[current] + GetEdgeWeight(current, neighbour);
+                    
+                    // If no shorter path is found continue to next, otherwise set shortest path to alternative
+                    if (alternativeCost >= distance[neighbour]) continue;
+                    distance[neighbour] = alternativeCost;
+                    previous[neighbour] = current;
+                }
+            }
+            
+            // Return the distances array and previous array as a tuple
+            return new Tuple<int[], int[]>(distance, previous);
         }
         
+        /// <summary>
+        /// Helper method for Dijkstra. The method returns the index of the unvisited neighbour with
+        /// the lowest cost
+        /// </summary>
+        /// <param name="distances">The current path cost for each vertex</param>
+        /// <param name="vertices">Set of unvisited vertices</param>
+        /// <returns></returns>
+        private static int FindMinimumIndex(IReadOnlyList<int> distances, HashSet<int> vertices)
+        {
+            int minimumIndex = vertices.First();
+            int lowestCost = distances[minimumIndex];
+
+            foreach (int vertex in vertices)
+            {
+                if (distances[vertex] >= lowestCost) continue;
+                minimumIndex = vertex;
+                lowestCost = distances[vertex];
+            }
+
+            return minimumIndex;
+        }
+
         // TODO Implement Floyd-Warschall Algorithm
     }
 
@@ -313,7 +382,7 @@ namespace Data_Structures
             Data = data;
         }
 
-        public int Index { get; set; }
-        public T Data { get; set; }
+        public int Index { get; private set; }
+        public T Data { get; private set; }
     }
 }

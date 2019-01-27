@@ -25,6 +25,17 @@ namespace Testing
             new Tuple<int, int>(6,3)
 
         };
+
+        private readonly Tuple<int, int, int>[] edgesWeights =
+        {
+            new Tuple<int, int, int>(0, 1, 8),
+            new Tuple<int, int, int>(0, 2, 1),
+            new Tuple<int, int, int>(1, 3, 2),   
+            new Tuple<int, int, int>(2, 3, 3),
+            new Tuple<int, int, int>(3, 4, 4),
+            new Tuple<int, int, int>(3, 5, 6),
+            new Tuple<int, int, int>(4, 5, 1)
+        };
         
         private readonly string[] graphDijkstra =  {"A", "B", "C", "D", "E", "F"};
         
@@ -137,7 +148,20 @@ namespace Testing
 
         #region Dijkstra Tests
 
-        
+        [Fact]
+        public void TestDijkstra()
+        {
+            // Graph, Edges and distance are based on the graph presented in the slides
+            graph = new Graph<string>(graphDijkstra,edgesWeights);
+            Tuple<int[], int[]> results = graph.Dijkstra(0);
+            int[] distance = results.Item1;
+            
+            Assert.Equal(6, distance[1]);
+            Assert.Equal(1, distance[2]);
+            Assert.Equal(4, distance[3]);
+            Assert.Equal(8, distance[4]);
+            Assert.Equal(9, distance[5]);
+        }
 
         #endregion
 
